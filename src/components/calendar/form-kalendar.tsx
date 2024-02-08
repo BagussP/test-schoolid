@@ -16,18 +16,22 @@ export const AddEvent: React.FC<AddEventProps> = ({ status, onClose }) => {
   const toggleSwitch = () => {
     setChecked(!checked);
   };
-  const [name, setName] = useState("");
   //   const [code, setCode] = useState("CLS202307");
   //   const [desc, setDesc] = useState("");
   const [startDate, setStartDate] = useState("");
   const [untilDate, setUntilDate] = useState("");
   const [eventName, setEventName] = useState("");
 
+  const hasEmptyValue = (...values: string[]) => {
+    return values.some((value) => value.trim() === "");
+  };
+  const isButtonDisabled = hasEmptyValue(startDate, eventName);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log(checked);
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       if (untilDate) {
         const dateRange = getDateRange(startDate, untilDate);
         for (let index = 0; index < dateRange.length; index++) {
@@ -153,8 +157,12 @@ export const AddEvent: React.FC<AddEventProps> = ({ status, onClose }) => {
             </button>
             <button
               type="submit"
-              disabled={false}
-              className="px-8 py-3 rounded-full box-border w-[120px] h-[45px] bg-[#E6E6E6] text-[#A1A0A3] text-sm font-semibold"
+              disabled={isButtonDisabled}
+              className={`${
+                isButtonDisabled
+                  ? "bg-[#E6E6E6] text-[#A1A0A3]"
+                  : "bg-primary text-white"
+              } px-8 py-3 rounded-full box-border w-[120px] h-[45px] text-sm font-semibold`}
             >
               Simpan
             </button>
@@ -165,16 +173,14 @@ export const AddEvent: React.FC<AddEventProps> = ({ status, onClose }) => {
         className={`${
           isLoading ? "block" : "hidden"
         }z-50 fixed top-0 w-full h-screen opacity-25 bg-black`}
+      ></div>
+      <div
+        className={`${
+          isLoading ? "block" : "hidden"
+        } fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 `}
       >
-        <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 ">
-          <LoadingSpinner />
-        </div>
-      </div>
-      <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 ">
         <LoadingSpinner />
       </div>
-      <div className="fixed z-10 top-0 w-full h-screen opacity-25 bg-black"></div>
     </div>
   );
 };
-

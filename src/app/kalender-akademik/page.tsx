@@ -4,12 +4,17 @@ import React, { useState } from "react";
 import CalendarWraperContext from "@/components/calendar/calendar-wraper-context";
 import IndexCalendar from "@/components/calendar";
 import { AddEvent } from "@/components/calendar/form-kalendar";
+import { DeleteEvent } from "@/components/calendar/delete-date";
 function Page() {
-  const [formDispay, setformDispay] = useState(false)
+  const [formDisplay, setformDisplay] = useState(false)
+  const [deleteDisplay, setdeleteDisplay] = useState(false)
 
 
     const toggleFormDisplay = () => {
-      setformDispay(!formDispay);
+      setformDisplay(!formDisplay);
+    };
+    const toggleDeleteDisplay = () => {
+      setdeleteDisplay(!deleteDisplay);
     };
 
   return (
@@ -21,16 +26,28 @@ function Page() {
             Selamat datang di Portal Admin MI Sabilussalam
           </p>
         </div>
-        <button onClick={toggleFormDisplay} className="font-medium text-primary bg-white w-fit h-fit px-6 py-2 rounded-full mr-25 mt-12">
-          Tambah Jadwal & Acara +
+        <div className="w-fit flex gap-4 mr-25 ">
+          <button
+            onClick={toggleDeleteDisplay}
+            className="font-medium text-[#E21C1C] bg-white w-fit h-fit px-6 py-2 rounded-full mt-12"
+          >
+            Hapus Jadwal & Acara +
           </button>
+          <button
+            onClick={toggleFormDisplay}
+            className="font-medium text-primary bg-white w-fit h-fit px-6 py-2 rounded-full first-letter mt-12"
+          >
+            Tambah Jadwal & Acara +
+          </button>
+        </div>
       </div>
       <div className="relative flex-grow h-fit mx-25 -mt-[104px] bg-white flex flex-col box-border gap-6 p-6 rounded-t-[20px]">
         <CalendarWraperContext>
           <IndexCalendar />
         </CalendarWraperContext>
       </div>
-      <AddEvent status={formDispay} onClose={toggleFormDisplay}/>
+      <AddEvent status={formDisplay} onClose={toggleFormDisplay} />
+      <DeleteEvent status={deleteDisplay} onClose={toggleDeleteDisplay} />
     </div>
   );
 }
