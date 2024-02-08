@@ -26,20 +26,17 @@ const Pembayaran = () => {
   const [dataTeacher, setDataTeacher] = useState<any[]>([]);
   const [userId, setUserId] = useState("");
   const [paymentId, setPaymentId] = useState(0);
-  const headers = useMemo(
-    () => ({
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-      "School-Code" : "SBBSALAM"
-    }),
-    [] // Tidak ada dependensi, karena inisialisasi hanya dilakukan sekali
-  );
+ 
 
   useEffect(() => {
     const fetchDataUser = async (user_id?: string) => {
       try {
         const response = await fetch(`${API_URL}/gurus?item_per_page=100`, {
-          headers,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            "School-Code": "SBBSALAM",
+          },
           // body: JSON.stringify({
           //   item_per_page: 100
           // })
@@ -58,7 +55,13 @@ const Pembayaran = () => {
 
     const fetchDataGajis = async () => {
       try {
-        const response = await fetch(`${API_URL}/gajis`, { headers });
+        const response = await fetch(`${API_URL}/gajis`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            "School-Code": "SBBSALAM",
+          },
+        });
         const responseData = await response.json();
         setData(responseData.data.data);
         console.log(responseData.data.data);
@@ -68,7 +71,7 @@ const Pembayaran = () => {
     };
     fetchDataGajis();
     fetchDataUser();
-  }, [headers, data]);
+  }, [ data]);
 
   const handleClose = () => {
     setDetailStatus(!detailStatus);
@@ -96,7 +99,11 @@ const Pembayaran = () => {
   const handlePagination = async (e: string | null) => {
     try {
       const response = await fetch(`${e}&item_per_page=10`, {
-        headers,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          "School-Code": "SBBSALAM",
+        },
       });
       const responseData = await response.json();
       console.log(responseData.data);
